@@ -8,7 +8,6 @@ public class ModbusConfig {
     private static boolean sEnableRtuCrc = true;
     private static boolean sShowSendLog = false;
     private static boolean sShowRecvLog = false;
-    private static boolean sRtuCrcLittleEndian = true;
 
     /**
      * 是否启用Rtu的Crc校验
@@ -55,24 +54,6 @@ public class ModbusConfig {
      */
     public static boolean isEnalbeRecvLog() {
         return sShowRecvLog;
-    }
-
-    /**
-     * 配置Rtu的Crc校验为大端或小端
-     *
-     * @param rtuCrcLittleEndian
-     */
-    public static void setRtuCrcLittleEndian(boolean rtuCrcLittleEndian) {
-        sRtuCrcLittleEndian = rtuCrcLittleEndian;
-    }
-
-    /**
-     * Rtu的Crc校验是否为小端
-     *
-     * @return
-     */
-    public static boolean isRtuCrcLittleEndian() {
-        return sRtuCrcLittleEndian;
     }
 
 }
