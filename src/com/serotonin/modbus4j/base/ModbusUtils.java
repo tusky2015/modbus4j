@@ -20,6 +20,7 @@
  */
 package com.serotonin.modbus4j.base;
 
+import com.serotonin.modbus4j.ModbusConfig;
 import com.serotonin.modbus4j.code.RegisterRange;
 import com.serotonin.modbus4j.exception.IllegalSlaveIdException;
 import com.serotonin.modbus4j.exception.ModbusIdException;
@@ -220,7 +221,12 @@ public class ModbusUtils {
             low = lookupCRCLo[uIndex];
         }
 
-        return (high << 8) | low;
+        // rtu的crc校验为小端
+        if (ModbusConfig.isRtuCrcLittleEndian()) {
+            return (high << 8) | low;
+        } else {    // rtu的crc校验为大端
+            return (low << 8) | high;
+        }
     }
 
     // Table of CRC values for high-order byte

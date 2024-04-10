@@ -1,6 +1,31 @@
 modbus4j
 ========
 
+```
+	allprojects {
+		repositories {
+			...
+			maven { url 'https://jitpack.io' }
+		}
+	}
+	
+	dependencies {
+	        implementation 'com.github.tusky2015:modbus4j:v3.1.1-alpha1'
+	}
+```
+
+增加可以设置 启用/禁用 串口CRC校验
+```
+// 禁用串口CRC校验
+ModbusConfig.setEnableRtuCrc(false);
+// 设置是否显示收发日志
+ModbusConfig.setEnableDataLog(true,true);
+```
+
+
+
+# 下面是原来REPO的README
+
 A high-performance and ease-of-use implementation of the Modbus protocol written in Java by Infinite Automation Systems and Serotonin Software. Supports ASCII, RTU, TCP, and UDP transports as slave or master, automatic request partitioning and response data type parsing.
 
 For support and general help please see our [Forum](https://forum.infiniteautomation.com/category/11/modbus4j-general-discussion)

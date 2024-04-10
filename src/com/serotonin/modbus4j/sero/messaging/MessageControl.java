@@ -2,6 +2,7 @@ package com.serotonin.modbus4j.sero.messaging;
 
 import java.io.IOException;
 
+import com.serotonin.modbus4j.ModbusConfig;
 import com.serotonin.modbus4j.sero.io.StreamUtils;
 import com.serotonin.modbus4j.sero.log.BaseIOLog;
 import com.serotonin.modbus4j.sero.timer.SystemTimeSource;
@@ -196,7 +197,7 @@ public class MessageControl implements DataConsumer {
      */
     public IncomingResponseMessage send(OutgoingRequestMessage request, int timeout, int retries) throws IOException {
         byte[] data = request.getMessageData();
-        if (DEBUG)
+        if (DEBUG|| ModbusConfig.isEnalbeSendLog())
             System.out.println("MessagingControl.send: " + StreamUtils.dumpHex(data));
 
         IncomingResponseMessage response = null;
@@ -250,7 +251,7 @@ public class MessageControl implements DataConsumer {
      * Incoming data from the transport. Single-threaded.
      */
     public void data(byte[] b, int len) {
-        if (DEBUG)
+        if (DEBUG||ModbusConfig.isEnalbeRecvLog())
             System.out.println("MessagingConnection.read: " + StreamUtils.dumpHex(b, 0, len));
         if (ioLog != null)
             ioLog.input(b, 0, len);
