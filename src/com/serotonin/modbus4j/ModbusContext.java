@@ -1,9 +1,11 @@
 package com.serotonin.modbus4j;
 
+import com.alibaba.ttl.TransmittableThreadLocal;
+
 public class ModbusContext {
 
     // crc校验大小端
-    private static final ThreadLocal<Boolean> crcLittleEndian = new ThreadLocal<Boolean>() {
+    private static final TransmittableThreadLocal<Boolean> crcLittleEndian = new TransmittableThreadLocal<Boolean>() {
         @Override
         protected Boolean initialValue() {
             return true;
