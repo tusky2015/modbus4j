@@ -89,7 +89,7 @@ public class RtuMaster extends SerialMaster {
         this.conn = getMessageControl();
         this.conn.start(transport, rtuMessageParser, null, new SerialWaitingRoomKeyFactory());
         if (getePoll() == null) {
-            ((StreamTransport) transport).start("Modbus RTU master");
+            ((StreamTransport) transport).start("Modbus RTU master: " + this.wrapper.toString());
         }
     }
 

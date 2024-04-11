@@ -3,6 +3,7 @@ package com.serotonin.modbus4j.sero.messaging;
 import java.io.IOException;
 
 import com.serotonin.modbus4j.ModbusConfig;
+import com.serotonin.modbus4j.ModbusContext;
 import com.serotonin.modbus4j.sero.io.StreamUtils;
 import com.serotonin.modbus4j.sero.log.BaseIOLog;
 import com.serotonin.modbus4j.sero.timer.SystemTimeSource;
@@ -35,6 +36,8 @@ public class MessageControl implements DataConsumer {
     private int timeout = DEFAULT_TIMEOUT;
     private int discardDataDelay = 0;
     private long lastDataTimestamp;
+    // 主线程id
+    private long mainThreadId = 0;
 
     private BaseIOLog ioLog;
     private TimeSource timeSource = new SystemTimeSource();
@@ -139,6 +142,15 @@ public class MessageControl implements DataConsumer {
         this.discardDataDelay = discardDataDelay;
     }
 
+
+    public long getMainThreadId() {
+        return mainThreadId;
+    }
+
+    public void setMainThreadId(long mainThreadId) {
+        this.mainThreadId = mainThreadId;
+    }
+
     /**
      * <p>Getter for the field <code>ioLog</code>.</p>
      *
@@ -196,6 +208,8 @@ public class MessageControl implements DataConsumer {
      * @throws java.io.IOException if any.
      */
     public IncomingResponseMessage send(OutgoingRequestMessage request, int timeout, int retries) throws IOException {
+        // 设置主线程id
+        ModbusContext.setMainThreadId(getMainThreadId());
         byte[] data = request.getMessageData();
         if (DEBUG|| ModbusConfig.isEnalbeSendLog())
             System.out.println("MessagingControl.send: " + StreamUtils.dumpHex(data));
@@ -264,6 +278,9 @@ public class MessageControl implements DataConsumer {
         }
 
         dataBuffer.push(b, 0, len);
+
+        // 设置主线程id
+        ModbusContext.setMainThreadId(getMainThreadId());
 
         // There may be multiple messages in the data, so enter a loop.
         while (true) {

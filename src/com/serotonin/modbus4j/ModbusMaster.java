@@ -105,6 +105,9 @@ abstract public class ModbusMaster extends Modbus {
     private int discardDataDelay = 0;
     private BaseIOLog ioLog;
 
+    // 主线程id
+    private long mainThreadId = 0;
+
     /**
      * An input stream ePoll will use a single thread to read all input streams. If multiple serial or TCP modbus
      * connections are to be made, an ePoll can be much more efficient.
@@ -343,6 +346,14 @@ abstract public class ModbusMaster extends Modbus {
             this.timeout = timeout;
     }
 
+    public long getMainThreadId() {
+        return mainThreadId;
+    }
+
+    public void setMainThreadId(long mainThreadId) {
+        this.mainThreadId = mainThreadId;
+    }
+
     /**
      * <p>isMultipleWritesOnly.</p>
      *
@@ -459,6 +470,7 @@ abstract public class ModbusMaster extends Modbus {
         conn.setTimeout(getTimeout());
         conn.setDiscardDataDelay(getDiscardDataDelay());
         conn.setExceptionHandler(getExceptionHandler());
+        conn.setMainThreadId(getMainThreadId());
         conn.setIoLog(ioLog);
         return conn;
     }

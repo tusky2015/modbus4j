@@ -1,29 +1,49 @@
 package com.serotonin.modbus4j;
 
-import com.alibaba.ttl.TransmittableThreadLocal;
+import org.apache.commons.lang3.StringUtils;
+
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class ModbusContext {
 
-    // crc校验大小端
-    private static final TransmittableThreadLocal<Boolean> crcLittleEndian = new TransmittableThreadLocal<Boolean>() {
+    // 通道名称
+    private static final ThreadLocal<Long> mainThreadId = new ThreadLocal<Long>() {
         @Override
-        protected Boolean initialValue() {
-            return true;
+        protected Long initialValue() {
+            return 0L;
         }
     };
+    // 全局CRC大小端Map
+    private static final Map<Long, Boolean> crcLittleEndian = new ConcurrentHashMap<>();
 
-    public ModbusContext() {}
+    private ModbusContext() {}
+
+    public static Long getMainThreadId() {
+        return mainThreadId.get();
+    }
+
+    public static void setMainThreadId(Long threadId) {
+        mainThreadId.set(threadId);
+    }
+
+    public static void destroyMainThreadId() {
+        mainThreadId.remove();
+    }
 
     public static Boolean isCrcLittleEndian() {
-        return crcLittleEndian.get();
+        Long threadId = getMainThreadId();
+        if (threadId != 0 && crcLittleEndian.containsKey(threadId)) {
+            return crcLittleEndian.get(threadId);
+        }
+        return true;
     }
 
-    public static void setLittleEndian(Boolean littleEndian) {
-        crcLittleEndian.set(littleEndian);
-    }
-
-    public static void destroyCrcLittleEndian() {
-        crcLittleEndian.remove();
+    public static void setCrcLittleEndian(Boolean littleEndian) {
+        Long threadId = getMainThreadId();
+        if (threadId != 0) {
+            crcLittleEndian.put(threadId, littleEndian);
+        }
     }
 
 }
