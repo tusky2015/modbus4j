@@ -210,6 +210,7 @@ public class MessageControl implements DataConsumer {
     public IncomingResponseMessage send(OutgoingRequestMessage request, int timeout, int retries) throws IOException {
         // 设置主线程id
         ModbusContext.setMainThreadId(getMainThreadId());
+
         byte[] data = request.getMessageData();
         if (DEBUG|| ModbusConfig.isEnalbeSendLog())
             System.out.println("MessagingControl.send: " + StreamUtils.dumpHex(data));

@@ -46,4 +46,8 @@ public class ModbusContext {
         }
     }
 
+    public static void clearCrcLittleEndian() {
+        crcLittleEndian.clear();
+    }
+
 }
