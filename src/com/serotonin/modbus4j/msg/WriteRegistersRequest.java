@@ -77,8 +77,7 @@ public class WriteRegistersRequest extends ModbusRequest {
     @Override
     ModbusResponse handleImpl(ProcessImage processImage) throws ModbusTransportException {
         short[] sdata = convertToShorts(data);
-        for (int i = 0; i < sdata.length; i++)
-            processImage.writeHoldingRegister(startOffset + i, sdata[i]);
+        processImage.writeHoldingRegisters(startOffset, sdata);
         return new WriteRegistersResponse(slaveId, startOffset, sdata.length);
     }
 

@@ -91,6 +91,16 @@ public class ListenerTest {
             //            }
             System.out.println("HR at " + offset + " was set from " + oldValue + " to " + newValue);
         }
+
+        @Override
+        public void coilsWrite(int offset, boolean[] data) {
+
+        }
+
+        @Override
+        public void holdingRegistersWrite(int offset, short[] data) {
+
+        }
     }
 
     static BasicProcessImage getModscanProcessImage(int slaveId) {

@@ -463,6 +463,15 @@ public class BasicProcessImage implements ProcessImage {
             l.coilWrite(offset, old, value);
     }
 
+    @Override
+    public void writeCoils(int offset, boolean[] data) throws IllegalDataAddressException {
+
+        for (int i = 0; i < data.length; i++)
+            setCoil(offset + i, data[i]);
+        for (ProcessImageListener l : writeListeners)
+            l.coilsWrite(offset, data);
+    }
+
     //
     // Inputs
     /** {@inheritDoc} */
@@ -503,7 +512,15 @@ public class BasicProcessImage implements ProcessImage {
             l.holdingRegisterWrite(offset, old, value);
     }
 
-    //
+    @Override
+    public void writeHoldingRegisters(int offset, short[] data) throws IllegalDataAddressException {
+        for (int i = 0; i < data.length; i++)
+            setHoldingRegister(offset + i, data[i]);
+
+        for (ProcessImageListener l : writeListeners)
+            l.holdingRegistersWrite(offset, data);
+    }
+
     // Input registers
     /** {@inheritDoc} */
     @Override

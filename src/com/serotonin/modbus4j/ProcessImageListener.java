@@ -44,4 +44,20 @@ public interface ProcessImageListener {
      * @param newValue a short.
      */
     public void holdingRegisterWrite(int offset, short oldValue, short newValue);
+
+    /**
+     * <p>coilWrite.</p>
+     *
+     * @param offset a int.
+     * @param data boolean array.
+     */
+    public void coilsWrite(int offset, boolean[] data);
+
+    /**
+     * <p>holdingRegisterWrite.</p>
+     *
+     * @param offset a int.
+     * @param data short array.
+     */
+    public void holdingRegistersWrite(int offset, short[] data);
 }

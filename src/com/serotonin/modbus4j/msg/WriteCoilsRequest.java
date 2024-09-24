@@ -77,8 +77,7 @@ public class WriteCoilsRequest extends ModbusRequest {
     @Override
     ModbusResponse handleImpl(ProcessImage processImage) throws ModbusTransportException {
         boolean[] bdata = convertToBooleans(data);
-        for (int i = 0; i < numberOfBits; i++)
-            processImage.writeCoil(startOffset + i, bdata[i]);
+        processImage.writeCoils(startOffset, bdata);
         return new WriteCoilsResponse(slaveId, startOffset, numberOfBits);
     }
 

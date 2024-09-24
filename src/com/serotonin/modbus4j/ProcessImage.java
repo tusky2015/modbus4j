@@ -67,6 +67,15 @@ public interface ProcessImage {
      */
     void writeCoil(int offset, boolean value) throws IllegalDataAddressException;
 
+    /**
+     * Used to set the coil as a result of a write command from the master.
+     *
+     * @param offset a int.
+     * @param data boolean array.
+     * @throws com.serotonin.modbus4j.exception.IllegalDataAddressException if any.
+     */
+    void writeCoils(int offset, boolean[] data) throws IllegalDataAddressException;
+
     //
     // /
     // / Inputs
@@ -119,6 +128,15 @@ public interface ProcessImage {
      * @throws com.serotonin.modbus4j.exception.IllegalDataAddressException if any.
      */
     void writeHoldingRegister(int offset, short value) throws IllegalDataAddressException;
+
+    /**
+     * Used to set the holding registers as a result of a write command from the master.
+     *
+     * @param offset a int.
+     * @param data short array.
+     * @throws com.serotonin.modbus4j.exception.IllegalDataAddressException if any.
+     */
+    void writeHoldingRegisters(int offset, short[] data) throws IllegalDataAddressException;
 
     //
     // /
