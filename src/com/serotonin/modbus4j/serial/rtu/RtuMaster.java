@@ -45,7 +45,7 @@ public class RtuMaster extends SerialMaster {
     private final Log LOG = LogFactory.getLog(RtuMaster.class);
 
     // Runtime fields.
-    private MessageControl conn;
+    protected MessageControl conn;
 
     /**
      * <p>Constructor for RtuMaster.</p>

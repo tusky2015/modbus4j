@@ -39,7 +39,9 @@ import com.serotonin.modbus4j.serial.SerialPortWrapper;
 import com.serotonin.modbus4j.serial.ascii.AsciiMaster;
 import com.serotonin.modbus4j.serial.ascii.AsciiSlave;
 import com.serotonin.modbus4j.serial.rtu.RtuMaster;
+import com.serotonin.modbus4j.serial.rtu.RtuRawMaster;
 import com.serotonin.modbus4j.serial.rtu.RtuSlave;
+import com.serotonin.modbus4j.sero.messaging.MessageParser;
 
 /**
  * <p>ModbusFactory class.</p>
@@ -59,6 +61,16 @@ public class ModbusFactory {
      */
     public ModbusMaster createRtuMaster(SerialPortWrapper wrapper) {
         return new RtuMaster(wrapper);
+    }
+
+    /**
+     * <p>createRtuMaster.</p>
+     *
+     * @param wrapper a {@link com.serotonin.modbus4j.serial.SerialPortWrapper} object.
+     * @return a {@link com.serotonin.modbus4j.ModbusMaster} object.
+     */
+    public ModbusMaster createRtuRawMaster(SerialPortWrapper wrapper, MessageParser messageParser) {
+        return new RtuRawMaster(wrapper, messageParser);
     }
     
     /**
