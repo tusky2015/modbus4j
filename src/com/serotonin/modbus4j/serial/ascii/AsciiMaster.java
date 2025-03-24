@@ -42,8 +42,6 @@ import com.serotonin.modbus4j.sero.messaging.StreamTransport;
 public class AsciiMaster extends SerialMaster {
     private final Log LOG = LogFactory.getLog(SerialMaster.class);
 
-    private MessageControl conn;
-
     /**
      * <p>Constructor for AsciiMaster.</p>
      *

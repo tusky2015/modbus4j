@@ -334,4 +334,12 @@ public class MessageControl implements DataConsumer {
     public void handleIOException(IOException e) {
         exceptionHandler.receivedException(e);
     }
+
+    public MessageParser getMessageParser() {
+        return messageParser;
+    }
+
+    public void setMessageParser(MessageParser messageParser) {
+        this.messageParser = messageParser;
+    }
 }

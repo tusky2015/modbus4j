@@ -54,6 +54,7 @@ import com.serotonin.modbus4j.msg.WriteRegistersRequest;
 import com.serotonin.modbus4j.sero.epoll.InputStreamEPollWrapper;
 import com.serotonin.modbus4j.sero.log.BaseIOLog;
 import com.serotonin.modbus4j.sero.messaging.MessageControl;
+import com.serotonin.modbus4j.sero.messaging.MessageParser;
 import com.serotonin.modbus4j.sero.util.ArrayUtils;
 import com.serotonin.modbus4j.sero.util.ProgressiveTask;
 
@@ -66,6 +67,8 @@ import com.serotonin.modbus4j.sero.util.ProgressiveTask;
 abstract public class ModbusMaster extends Modbus {
     private int timeout = 500;
     private int retries = 2;
+
+    protected MessageControl conn;
 
     /**
      * Should we validate the responses:
@@ -116,6 +119,16 @@ abstract public class ModbusMaster extends Modbus {
 
     private final Map<Integer, SlaveProfile> slaveProfiles = new HashMap<>();
     protected boolean initialized;
+
+    /**
+     * 设置消息解析器
+     * @param messageParser
+     */
+    public void setMessageParser(MessageParser messageParser) {
+        if (conn != null) {
+            conn.setMessageParser(messageParser);
+        }
+    }
 
     /**
      * <p>init.</p>

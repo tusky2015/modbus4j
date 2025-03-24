@@ -68,8 +68,6 @@ public class TcpMaster extends ModbusMaster {
     // Runtime fields.
     private Socket socket;
     private Transport transport;
-    private MessageControl conn;
-
 
     /**
      * <p>Constructor for TcpMaster.</p>
