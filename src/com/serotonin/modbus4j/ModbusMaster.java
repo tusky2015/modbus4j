@@ -20,6 +20,7 @@
  */
 package com.serotonin.modbus4j;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -51,10 +52,14 @@ import com.serotonin.modbus4j.msg.WriteCoilsRequest;
 import com.serotonin.modbus4j.msg.WriteMaskRegisterRequest;
 import com.serotonin.modbus4j.msg.WriteRegisterRequest;
 import com.serotonin.modbus4j.msg.WriteRegistersRequest;
+import com.serotonin.modbus4j.serial.rtu.RtuMessageRequest;
+import com.serotonin.modbus4j.serial.rtu.RtuMessageResponse;
 import com.serotonin.modbus4j.sero.epoll.InputStreamEPollWrapper;
 import com.serotonin.modbus4j.sero.log.BaseIOLog;
+import com.serotonin.modbus4j.sero.messaging.IncomingResponseMessage;
 import com.serotonin.modbus4j.sero.messaging.MessageControl;
 import com.serotonin.modbus4j.sero.messaging.MessageParser;
+import com.serotonin.modbus4j.sero.messaging.OutgoingRequestMessage;
 import com.serotonin.modbus4j.sero.util.ArrayUtils;
 import com.serotonin.modbus4j.sero.util.ProgressiveTask;
 
@@ -121,12 +126,12 @@ abstract public class ModbusMaster extends Modbus {
     protected boolean initialized;
 
     /**
-     * 设置消息解析器
+     * 设置一次性消息解析器
      * @param messageParser
      */
-    public void setMessageParser(MessageParser messageParser) {
+    public void setOnceMessageParser(MessageParser messageParser) {
         if (conn != null) {
-            conn.setMessageParser(messageParser);
+            conn.setOnceMessageParser(messageParser);
         }
     }
 
@@ -150,6 +155,28 @@ abstract public class ModbusMaster extends Modbus {
      * <p>destroy.</p>
      */
     abstract public void destroy();
+
+    /**
+     * 发送原始数据
+     * @param data
+     * @return
+     * @throws IOException
+     */
+    public final IncomingResponseMessage sendCmd(byte[] data) throws IOException {
+
+        OutgoingRequestMessage request = new OutgoingRequestMessage() {
+            @Override
+            public boolean expectsResponse() {
+                return true;
+            }
+            @Override
+            public byte[] getMessageData() {
+                return data;
+            }
+        };
+
+        return conn.send(request);
+    }
 
     /**
      * <p>send.</p>

@@ -29,6 +29,8 @@ public class MessageControl implements DataConsumer {
 
     private Transport transport;
     private MessageParser messageParser;
+    // 一次性数据解析器
+    private MessageParser onceMessageParser;
     private RequestHandler requestHandler;
     private WaitingRoomKeyFactory waitingRoomKeyFactory;
     private MessagingExceptionHandler exceptionHandler = new DefaultMessagingExceptionHandler();
@@ -291,13 +293,17 @@ public class MessageControl implements DataConsumer {
                 // will consume the buffer we need to be able to backtrack.
                 dataBuffer.mark();
 
-                IncomingMessage message = messageParser.parseMessage(dataBuffer);
+                // 一次性解析器解析
+                MessageParser onceMessageParser = getOnceMessageParser();
+                IncomingMessage message = onceMessageParser.parseMessage(dataBuffer);
 
                 if (message == null) {
                     // Nothing to do. Reset the buffer and exit the loop.
                     dataBuffer.reset();
                     break;
                 }
+                // 清除一次性解析器
+                setOnceMessageParser(null);
 
                 if (message instanceof IncomingRequestMessage) {
                     // Received a request. Give it to the request handler
@@ -335,11 +341,16 @@ public class MessageControl implements DataConsumer {
         exceptionHandler.receivedException(e);
     }
 
-    public MessageParser getMessageParser() {
-        return messageParser;
+
+    public MessageParser getOnceMessageParser() {
+        if (this.onceMessageParser != null) {
+            return this.onceMessageParser;
+        } else {
+            return this.messageParser;
+        }
     }
 
-    public void setMessageParser(MessageParser messageParser) {
-        this.messageParser = messageParser;
+    public void setOnceMessageParser(MessageParser messageParser) {
+        this.onceMessageParser = messageParser;
     }
 }
